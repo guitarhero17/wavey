@@ -1,0 +1,49 @@
+{
+  "name": "wavey",
+  "version": "0.1.0",
+  "description": "Social Media Platform for local musicians",
+  "author": "Dobromir Palushev",
+  "scripts": {
+    "dev": "rollup -c -w",
+    "__dev": "run-p watch:routify watch:rollup",
+    "__prebuild": "routify --single-build",
+    "build": "rollup -c",
+    "__watch:rollup": "rollup -c -w",
+    "__watch:routify": "routify",
+    "start": "sirv src/main/resources/static --single"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@rollup/plugin-replace": "^2.3.4",
+    "@roxi/routify": "^2.7.3",
+    "autoprefixer": "^10.2.3",
+    "cssnano": "^4.1.10",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.2.4",
+    "postcss-import": "^14.0.0",
+    "rollup": "^2.33.3",
+    "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-svelte": "^6.0.1",
+    "rollup-plugin-terser": "^5.1.2",
+    "serve": "^11.0.0",
+    "svelte": "^3.0.0",
+    "svelte-preprocess": "^4.6.3",
+    "tailwindcss": "^2.0.2"
+  },
+  "dependencies": {
+    "@lottiefiles/svelte-lottie-player": "^0.1.4",
+    "lottie-web": "^5.7.6",
+    "sirv-cli": "^1.0.6",
+    "svelte-content-loader": "^1.1.3",
+    "svelte-loading-spinners": "^0.1.4",
+    "svelte-session-manager": "^1.3.4",
+    "svelte-simple-modal": "^0.6.1",
+    "sveltejs-forms": "^2.1.2",
+    "sveltejs-tippy": "^3.0.0",
+    "wavesurfer.js": "^4.4.0",
+    "yup": "^0.32.8"
+  }
+}
