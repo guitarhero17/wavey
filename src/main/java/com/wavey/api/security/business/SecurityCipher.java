@@ -14,10 +14,6 @@ public class SecurityCipher {
 	private static SecretKeySpec secretKey;
 	private static byte[] key;
 
-//	private SecurityCipher() {
-//		throw new AssertionError("Static!");
-//	}
-
 	public static void setKey() {
 		MessageDigest sha;
 		try {

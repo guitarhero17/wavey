@@ -21,12 +21,12 @@ import io.jsonwebtoken.UnsupportedJwtException;
 public class JwtUtil {
 	
 	// randomly generated
-	private String SECRET_KEY = "79A1D0A64ED708FBF172AAC01EDEF78E47E8D3047585FD0618F27BB61A4E1B66";
+	private final String SECRET_KEY = "79A1D0A64ED708FBF172AAC01EDEF78E47E8D3047585FD0618F27BB61A4E1B66";
 	// expiration of 15 minutes
-	private int jwtExpirationInMs = 1000 * 60 * 15;
+	private final int jwtExpirationInMs = 1000 * 60 * 15;
 	// expiration of 20 minutes
-	private int refreshTokenExpirationInMs = 1000 * 60 * 20;
-	
+	private final int refreshTokenExpirationInMs = 1000 * 60 * 20;
+
 	public String extractUsername(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
