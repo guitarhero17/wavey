@@ -27,3 +27,6 @@ hs_err_pid*
 
 # node_modules
 .node_modules
+
+# Svelte bundle
+.src/main/resources/static/bundle.js
