@@ -23,9 +23,7 @@ public class WaveService {
 	}
 	
 	public List<Wave> getAllWaves(Long userId) {
-		List<Wave> waves = new ArrayList<>();
-		waveRepository.findByUserId(userId).forEach(waves::add);
-		return waves;
+		return new ArrayList<>(waveRepository.findByUserId(userId));
 	}
 	
 	public Wave getWave(Long userId, Long waveId) {
@@ -37,15 +35,14 @@ public class WaveService {
 	}
 	
 	public Wave updateWave(Long userId, Long waveId, Wave newWave) {
-		Wave updatedWave = getWaveOptional(userId, waveId).map(wave -> {
+
+		return getWaveOptional(userId, waveId).map(wave -> {
 			wave.setDescription(newWave.getDescription());
 			return waveRepository.save(wave);
 		}).orElseGet(() -> {
 			newWave.setId(waveId);
 			return waveRepository.save(newWave);
 		});
-		
-		return updatedWave;
 	}
 	
 	public void deleteWave(Long userId, Long waveId) {

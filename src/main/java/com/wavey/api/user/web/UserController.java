@@ -27,7 +27,7 @@ import com.wavey.api.user.web.hateoas.UserModelAssembler;
 
 /**
  * Created in compliance with the "Building REST services" guide
- * <p>{@link https://spring.io/guides/tutorials/rest/}</p>
+ * <p>{@link <a href="https://spring.io/guides/tutorials/rest/">Rest tutorials</a>}</p>
  * @author guitarhero17
  *
  */

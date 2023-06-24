@@ -27,14 +27,9 @@ public class WaveReactionService {
 	}
 	
 	public List<WaveReaction> getAllWaveReactions(Long userId, Long articleId) {
-		List<WaveReaction> reactions = new ArrayList<>();
-		
-		reactionRepository.findByWaveUserId(userId).stream()
-			.filter(reaction -> articleId.equals(reaction.getWave().getId()))
-			.collect(Collectors.toList())
-			.forEach(reactions::add);
-		
-		return reactions;
+
+		return reactionRepository.findByWaveUserId(userId).stream()
+				.filter(reaction -> articleId.equals(reaction.getWave().getId())).collect(Collectors.toList());
 	}
 	
 	public WaveReaction getWaveReaction(Long userId, Long articleId, Long reactionId) {
@@ -48,12 +43,12 @@ public class WaveReactionService {
 	
 	public WaveReaction updateWaveReaction(Long userId, Long articleId, Long reactionId, WaveReaction newReaction) {
 //		reactionRepository.save(reaction);
-		
-		WaveReaction updatedReaction = getWaveReactionOptional(userId, articleId, reactionId).map(reaction -> {
+
+		return getWaveReactionOptional(userId, articleId, reactionId).map(reaction -> {
 			reaction.setDate(newReaction.getDate());
 			reaction.setReaction(newReaction.getReaction());
 			reaction.setReactorId(newReaction.getReactorId());
-			
+
 			return reactionRepository.save(reaction);
 		}).orElseGet(() -> {
 			User user = new User();
@@ -65,8 +60,6 @@ public class WaveReactionService {
 			newReaction.setWave(article);
 			return reactionRepository.save(newReaction);
 		});
-		
-		return updatedReaction;
 	}
 	
 	public void deleteWaveReaction(Long userId, Long articleId, Long reactionId) {

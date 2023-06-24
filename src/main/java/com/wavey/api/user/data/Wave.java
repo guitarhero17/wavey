@@ -4,13 +4,13 @@ package com.wavey.api.user.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,8 +39,8 @@ public class Wave {
 	private String description;
 	
 	/**
-	 * <p>{@link https://github.com/spring-projects/spring-hateoas-examples/tree/master/hypermedia}</p>
-	 * Not serializing {@literal user} to break the recursive, bi-directional relationship.
+	 * <p>{@link <a href="https://github.com/spring-projects/spring-hateoas-examples/tree/master/hypermedia">Hypermedia</a>}</p>
+	 * Not serializing {@literal user} to break the recursive, bidirectional relationship.
 	 */
 	@JsonIgnore
 	@OneToOne

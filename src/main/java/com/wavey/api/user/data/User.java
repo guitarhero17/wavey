@@ -1,26 +1,17 @@
 package com.wavey.api.user.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotEmpty;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
