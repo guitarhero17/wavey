@@ -28,7 +28,9 @@ hs_err_pid*
 # node_modules
 /node_modules
 
-# Svelte bundle
-/src/main/resources/static/bundle.js
-/src/main/resources/static/svelte-components.*
+# Production build
+/src/main/resources/static
+
+# IntelliJ
+*.iml
 
