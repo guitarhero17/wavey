@@ -1,46 +1,37 @@
 package com.wavey.api.user.data;
 
 import java.util.Date;
+import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class WaveReaction {
 	
 	// A constructor for DBInitializer
-	public WaveReaction(Date date, ReactionType reaction, Wave wave, Long reactorId) {
+	public WaveReaction(Date date, ReactionType reaction, Wave wave) {
 		this.date = date;
 		this.reaction = reaction;
 		this.wave = wave;
-		this.reactorId = reactorId;
 	}
 
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy=GenerationType.UUID)
+	private UUID id;
+
 	private Date date;
 	private ReactionType reaction;
 	
-	private Long reactorId;
-	
 	@JsonIgnore
-	@OneToOne
+	@ManyToOne
 	private Wave wave;
 
 }

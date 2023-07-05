@@ -5,6 +5,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Component;
 
 import com.wavey.api.user.data.User;
@@ -16,11 +17,10 @@ public class UserModelAssembler implements RepresentationModelAssembler<User, En
 
 	@Override
 	public EntityModel<User> toModel(User user) {
-		// TODO Auto-generated method stub
 		return EntityModel.of(user, 
-				linkTo(methodOn(UserController.class).getUser(user.getId())).withSelfRel(),
+				linkTo(methodOn(UserController.class).getUser(user.getUsername())).withSelfRel(),
 				linkTo(methodOn(UserController.class).getAllUsers()).withRel("users"),
-				linkTo(methodOn(WaveController.class).getAllWaves(user.getId())).withRel("waves"));
+				linkTo(methodOn(WaveController.class).getAllWavesForUser(user.getUsername())).withRel("waves"));
 	}
 
 }

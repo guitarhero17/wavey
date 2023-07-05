@@ -13,6 +13,8 @@ import com.wavey.api.user.data.WaveReaction;
 import com.wavey.api.user.data.WaveReactionRepository;
 import com.wavey.api.user.data.WaveRepository;
 
+import java.util.Arrays;
+
 @Configuration
 public class DatabaseInitializer {
 	
@@ -24,22 +26,16 @@ public class DatabaseInitializer {
 		return args -> {
 			log.info("Preloading Data...");
 			if (userRepository != null) {
-				
-				for(User user: InitialData.getInitUsers()) {
-					userRepository.save(user);
-				}
-				
-				for (Wave wave: InitialData.getInitWaves()) {
-					waveRepository.save(wave);
-				}
-				
-				for (WaveReaction reaction: InitialData.getInitReactions()) {
-					reactionRepository.save(reaction);
-				}
+
+				userRepository.saveAll(Arrays.asList(InitialData.getInitUsers()));
+
+				waveRepository.saveAll(Arrays.asList(InitialData.getInitWaves()));
+
+				reactionRepository.saveAll(Arrays.asList(InitialData.getInitReactions()));
 				
 				userRepository.findAll().forEach(user -> log.info("Preloaded User " + user.getUsername()));
 				System.out.println("\n");
-				waveRepository.findAll().forEach(wave -> log.info("Preloaded Wave: " + wave.getDescription()));
+				waveRepository.findAll().forEach(wave -> log.info("Preloaded Wave: " + wave.getTitle()));
 				System.out.println("\n");
 				reactionRepository.findAll().forEach(reaction -> log.info("Preloaded a reaction " + reaction.getReaction() + " with id " + reaction.getId()));
 			} else {

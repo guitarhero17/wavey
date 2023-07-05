@@ -12,22 +12,24 @@ import com.wavey.api.user.web.WaveController;
 import com.wavey.api.user.web.WaveReactionController;
 import com.wavey.api.user.web.UserController;
 
+import java.util.UUID;
+
 @Component
 public class WaveReactionModelAssembler implements RepresentationModelAssembler<WaveReaction, EntityModel<WaveReaction>> {
 
 	@Override
 	public EntityModel<WaveReaction> toModel(WaveReaction reaction) {
 		
-		Long userId = reaction.getWave().getUser().getId();
-		Long waveId = reaction.getWave().getId();
-		Long reactionId = reaction.getId();
+		String username = reaction.getWave().getUser().getUsername();
+		String waveId = reaction.getWave().getId().toString();
+		String reactionId = reaction.getId().toString();
 		
 		return EntityModel.of(reaction,
-				linkTo(methodOn(WaveReactionController.class).getWaveReaction(userId, waveId, reactionId)).withSelfRel(),
-				linkTo(methodOn(WaveReactionController.class).getAllWaveReactions(userId, waveId)).withRel("waveReactions"),
-				linkTo(methodOn(WaveController.class).getWave(userId, waveId)).withRel("wave"),
-				linkTo(methodOn(WaveController.class).getAllWaves(userId)).withRel("waves"),
-				linkTo(methodOn(UserController.class).getUser(userId)).withRel("user"));
+				linkTo(methodOn(WaveReactionController.class).getWaveReaction(reactionId)).withSelfRel(),
+				linkTo(methodOn(WaveReactionController.class).getAllReactionsForWave(waveId)).withRel("waveReactions"),
+				linkTo(methodOn(WaveController.class).getWave(waveId)).withRel("wave"),
+				linkTo(methodOn(WaveController.class).getAllWavesForUser(username)).withRel("waves"),
+				linkTo(methodOn(UserController.class).getUser(username)).withRel("user"));
 	}
 
 }
