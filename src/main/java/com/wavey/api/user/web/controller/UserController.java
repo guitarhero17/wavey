@@ -1,4 +1,4 @@
-package com.wavey.api.user.web;
+package com.wavey.api.user.web.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

@@ -1,11 +1,10 @@
-package com.wavey.api.user.web;
+package com.wavey.api.user.web.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +21,7 @@ import com.wavey.api.user.business.WaveService;
 import com.wavey.api.user.data.User;
 import com.wavey.api.user.data.Wave;
 import com.wavey.api.user.web.hateoas.WaveModelAssembler;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created in compliance with the "Building REST services" guide
@@ -47,9 +48,9 @@ public class WaveController {
 		return CollectionModel.of(waveModels, linkTo(methodOn(WaveController.class).getAllWavesForUser(username)).withSelfRel());
 	}
 
-	@PostMapping(path = "/users/{username}/waves", consumes = "application/json")
-	public ResponseEntity<EntityModel<Wave>> createWave(@Valid @RequestBody Wave wave, @PathVariable String username) {
-		EntityModel<Wave> entityModel = assembler.toModel(waveService.createWave(wave, username));
+	@PostMapping(path = "/users/{username}/waves", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<EntityModel<Wave>> createWave(@PathVariable String username, @Valid @RequestPart Wave wave, @RequestPart MultipartFile audioFile) {
+		EntityModel<Wave> entityModel = assembler.toModel(waveService.createWave(username, wave, audioFile));
 		URI selfLink = entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri();
 		return ResponseEntity
 				.created(selfLink).header("Location", selfLink.toString()).body(entityModel);

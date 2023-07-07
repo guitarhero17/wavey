@@ -8,11 +8,9 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import com.wavey.api.user.data.WaveReaction;
-import com.wavey.api.user.web.WaveController;
-import com.wavey.api.user.web.WaveReactionController;
-import com.wavey.api.user.web.UserController;
-
-import java.util.UUID;
+import com.wavey.api.user.web.controller.WaveController;
+import com.wavey.api.user.web.controller.WaveReactionController;
+import com.wavey.api.user.web.controller.UserController;
 
 @Component
 public class WaveReactionModelAssembler implements RepresentationModelAssembler<WaveReaction, EntityModel<WaveReaction>> {

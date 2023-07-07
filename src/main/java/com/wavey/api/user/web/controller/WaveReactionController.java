@@ -1,4 +1,4 @@
-package com.wavey.api.user.web;
+package com.wavey.api.user.web.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -6,7 +6,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.wavey.api.user.business.WaveReactionService;
 import com.wavey.api.user.data.WaveReaction;
-import com.wavey.api.user.data.User;
 import com.wavey.api.user.web.hateoas.WaveReactionModelAssembler;
 
 @RestController

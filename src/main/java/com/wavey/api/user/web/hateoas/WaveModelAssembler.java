@@ -3,14 +3,14 @@ package com.wavey.api.user.web.hateoas;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import com.wavey.api.user.web.WaveReactionController;
+import com.wavey.api.user.web.controller.WaveReactionController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import com.wavey.api.user.data.Wave;
-import com.wavey.api.user.web.UserController;
-import com.wavey.api.user.web.WaveController;
+import com.wavey.api.user.web.controller.UserController;
+import com.wavey.api.user.web.controller.WaveController;
 
 @Component
 public class WaveModelAssembler implements RepresentationModelAssembler<Wave, EntityModel<Wave>> {

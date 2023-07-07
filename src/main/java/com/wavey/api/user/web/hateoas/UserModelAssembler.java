@@ -5,12 +5,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
-import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Component;
 
 import com.wavey.api.user.data.User;
-import com.wavey.api.user.web.UserController;
-import com.wavey.api.user.web.WaveController;
+import com.wavey.api.user.web.controller.UserController;
+import com.wavey.api.user.web.controller.WaveController;
 
 @Component
 public class UserModelAssembler implements RepresentationModelAssembler<User, EntityModel<User>> {
