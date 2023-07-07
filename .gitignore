@@ -31,6 +31,12 @@ hs_err_pid*
 # Production build
 /src/main/resources/static
 
+# HTTPS keys
+/src/main/resources/keystore
+
+# GCP config data
+/src/main/resources/gcp
+
 # IntelliJ
 *.iml
 
