@@ -42,6 +42,8 @@ public class Wave {
 	@JsonIgnore
 	@ManyToOne
 	private User user;
+
+	private String waveURL;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "wave", cascade = CascadeType.REMOVE, orphanRemoval = true)

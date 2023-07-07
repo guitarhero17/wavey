@@ -1,5 +1,9 @@
 package com.wavey.api.user.business;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +16,13 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import com.wavey.api.user.data.*;
 import com.wavey.api.user.exceptions.*;
+import com.wavey.api.user.web.dto.FileDto;
+import com.wavey.api.user.web.util.DataBucketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class WaveService {
@@ -25,6 +32,8 @@ public class WaveService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	private DataBucketUtil dataBucketUtil;
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -52,11 +61,13 @@ public class WaveService {
 		return getWaveOptional(waveId).orElseThrow(() -> new WaveNotFoundException(waveId));
 	}
 	
-	public Wave createWave(Wave newWave, String username) {
+	public Wave createWave(String username, Wave newWave, MultipartFile audioFile) {
 		User waveUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 		List<Wave> sameTitleWaves = waveUser.getWaves().stream().filter(wave -> wave.getTitle().equals(newWave.getTitle())).toList();
 		if (sameTitleWaves.isEmpty()) {
 			newWave.setUser(waveUser);
+			FileDto uploadedFile = uploadAudioFile(audioFile);
+			newWave.setWaveURL(uploadedFile.getFileName());
 			return waveRepository.save(newWave);
 		} else {
 			throw new WaveAlreadyExistsException(newWave.getTitle());
@@ -99,6 +110,23 @@ public class WaveService {
 			if (e.getMessage().contains("UUID")) {
 				throw new UUIDhasWrongFormatException(e.getMessage());
 			}
+		}
+	}
+
+	private FileDto uploadAudioFile(MultipartFile file) {
+		log.debug("Starting the upload to GCP...");
+
+		String originalFilename = file.getOriginalFilename();
+		if (originalFilename == null) {
+			throw new FileHasNoNameException();
+		}
+
+		Path filePath = new File(originalFilename).toPath();
+		try {
+			String contentType = Files.probeContentType(filePath);
+			return dataBucketUtil.uploadFile(file, originalFilename, contentType);
+		} catch (IOException e) {
+			throw new FileContentTypeCanNotBeRetrievedException(originalFilename);
 		}
 	}
 }
