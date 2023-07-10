@@ -28,6 +28,9 @@ hs_err_pid*
 # node_modules
 /node_modules
 
+# Routify dev mode paths
+/.routify
+
 # Production build
 /src/main/resources/static
 
