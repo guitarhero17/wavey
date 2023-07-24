@@ -1,6 +1,5 @@
 <script>
   import ContentLoader from 'svelte-content-loader'
-  import { fade } from 'svelte/transition'
 
   export let animateCL = true
 </script>
