@@ -1,20 +1,40 @@
 <script>
   import { fade } from 'svelte/transition'
   import { url } from '@roxi/routify'
-  import { retrieveAuthUserId } from '../lib/userAuthentication'
 
   export let user
 
+  const primaryInstrument = user.instrumentPrimary.toLowerCase()
+
 </script>
 
+<!--{#if user.id != retrieveAuthUserId()}-->
+  <li transition:fade class="w-1/4 m:w-1/3 s:w-1/2 xs:w-full mb-4">
+    <!-- transition:fade="{{duration: 400}}" -->
+    <div class="relative bottom-0 transitions hover:bottom-2 waves-bg-animated waves-bg-animated--upb mx-4 mt-4 hover:shadow-xl rounded-xl pb-3 cursor-pointer border border-gray-600 group">
+      <a class="block h-full" href={$url('./profile/:username', {username: user.username})}>
+        <img class="rounded-t-xl w-full h-44 m:h-40 s:h-36 xs:h-28 object-cover" src={$url('../images/user-profile-pictures/:username/main.jpg', { username: user.username})} alt={`Main profile picture of user ${user.username}`}>
+        <div class="mt-3 flex justify-between items-center">
+          {#if user.instrumentPrimary?.length > 0}
+            <div class="ml-2 rounded-full w-10 h-10">
+              <img class="w-full" src="{$url(`../images/instruments-logos/${primaryInstrument}.svg`)}" alt={`Image of the instrument ${primaryInstrument}`}>
+            </div>
+          {/if}
+          <div class="mr-2 name-wrapper group-hover:text-white">
+            <p class="text-base font-bold">{user.name.toUpperCase()}</p>
+            {#if user.instrumentPrimary?.length > 0}
+              <p class="text-right text-waveyYellow">{primaryInstrument}</p>
+            {/if}
+          </div>
+        </div>
+      </a>
+    </div>
+  </li>
+<!--{/if}-->
+
 <style>
-  .upb {
-    position: relative;
-    bottom: 0;
+  .transitions {
     transition: bottom 200ms ease-in, box-shadow 200ms ease-in, border 200ms ease-in;
-  }
-  .upb:hover {
-    bottom: 0.5rem;
   }
 
 @media (min-width: 768px) {
@@ -54,27 +74,3 @@
   }
 }
 </style>
-
-<!--{#if user.id != retrieveAuthUserId()}-->
-  <li class="w-1/4 mb-4 m:w-1/3 s:w-1/2 xs:w-full">
-    <div transition:fade="{{delay: 300, duration: 400}}" class="upb waves-bg-animated waves-bg-animated--upb mx-4 mt-4 hover:shadow-xl rounded-xl pb-3 cursor-pointer border border-gray-900 group">
-      <a href={$url('/profile/:username', {username: user.username})}>
-<!--        <div style:background-image="url({`public/images/user-profile-pictures/${user.username}/main.jpg`})" class="h-40 bg-cover bg-no-repeat bg-black rounded-t-xl"></div>-->
-        <img class="rounded-t-xl" src={`public/images/user-profile-pictures/${user.username}/main.jpg`} alt={`Main profile picture of user ${user.username}`}>
-        <div class="mt-3 flex justify-between items-center">
-          {#if user.instrumentPrimary && user.instrumentPrimary.length > 0}
-            <div class="ml-2 rounded-full w-10 h-10">
-              <img class="w-full" src="{`public/images/instruments-logos/${user.instrumentPrimary}.svg`}" alt="{user.instrumentPrimary}">
-            </div>
-          {/if}
-          <div class="mr-2 name-wrapper group-hover:text-white">
-            <p class="text-base">{user.name.toUpperCase()}</p>
-            {#if user.instrumentPrimary && user.instrumentPrimary.length > 0}
-              <p class="text-right text-waveyYellow font-bold">{user.instrumentPrimary.toLowerCase()}</p>
-            {/if}
-          </div>
-        </div>
-      </a>
-    </div>
-  </li>
-<!--{/if}-->

@@ -1,5 +1,7 @@
 package com.wavey.api.security.web;
 
+import com.google.gson.Gson;
+import com.wavey.api.security.data.UnauthorizedAccessEntry;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
@@ -20,9 +22,14 @@ public class WaveyBasicAuthenticationEntryPoint extends BasicAuthenticationEntry
         response.addHeader("WWW-Authenticate", "Basic realm=\"" + getRealmName() + "\"");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
 
-        PrintWriter writer = response.getWriter();
-        writer.println("HTTP Status 401 - " + authEx.getMessage());
+        UnauthorizedAccessEntry entry = new UnauthorizedAccessEntry(authEx.getMessage());
+        String errorJson = new Gson().toJson(entry);
+
+        PrintWriter out = response.getWriter();
+
+        out.write(errorJson);
     }
 
     @Override

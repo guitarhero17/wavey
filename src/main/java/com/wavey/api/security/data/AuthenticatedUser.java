@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.wavey.api.user.data.User;
+import com.wavey.api.data.User;
 
 // Source: https://labs.micromata.de/best-practices/tutorial-spring-security/jpa-und-spring-security/
 @SuppressWarnings("serial")

@@ -52,6 +52,9 @@ devDependencies:
   svelte-preprocess:
     specifier: ^5.0.4
     version: 5.0.4(postcss@8.4.24)(svelte@3.59.2)
+  svelte-simple-modal:
+    specifier: ^1.6.1
+    version: 1.6.1(svelte@3.59.2)
   tailwindcss:
     specifier: ^3.3.2
     version: 3.3.2
@@ -2917,6 +2920,14 @@ packages:
       postcss: 8.4.24
       sorcery: 0.11.0
       strip-indent: 3.0.0
+      svelte: 3.59.2
+    dev: true
+
+  /svelte-simple-modal@1.6.1(svelte@3.59.2):
+    resolution: {integrity: sha512-D4/Z7LQ6ThawYb7FlAeS/qGbcwVlqzRHn1zZgWPlEK0cp4l2UMcscqel58mp+gTuk4UX9gl516GYXcHFvuyslA==}
+    peerDependencies:
+      svelte: ^3.30.0 || ^4.0.0
+    dependencies:
       svelte: 3.59.2
     dev: true
 

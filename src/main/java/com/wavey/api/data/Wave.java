@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,8 +23,9 @@ import lombok.*;
 public class Wave {
 	
 	// A constructor for DBInitializer
-	public Wave(String title, User user) {
+	public Wave(String title, String fileName, User user) {
 		this.title = title;
+		this.fileName = fileName;
 		this.user = user;
 	}
 	
@@ -42,6 +45,8 @@ public class Wave {
 	@JsonIgnore
 	@ManyToOne
 	private User user;
+
+	private String fileName;
 
 	private String waveURL;
 	

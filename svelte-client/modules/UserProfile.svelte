@@ -1,28 +1,26 @@
 <script>
-  // import Modal from 'svelte-simple-modal'
+  import Modal from 'svelte-simple-modal'
   import { fade } from 'svelte/transition'
   import UserProfileContent from '../components/UserProfileContent.svelte'
   import UserProfileCL from '../components/content-loaders/UserProfileCL.svelte'
+  import { fetchAuthorized } from '../lib/userAuthentication'
 
   export let username
   
-  async function loadUser() {
-    return await fetch(`https://localhost:8443/users/${username}`)
-  }
+// const loadUser = async () => fetchAuthorized(`/api/users/${username}`)
+const loadUser = async () => fetch(`/api/users/${username}`).then(res => res.json())
+
 </script>
 
 {#await loadUser()}
   <UserProfileCL/>
 {:then user}
-  {#if user !== null}
-<!--    <Modal>-->
-<!--      <UserProfileContent { user }/>-->
-<!--    </Modal>-->
-  {:else}
-    <p>User was null, open modal</p>
-  {/if}
+  <Modal>
+    <UserProfileContent { user }/>
+  </Modal>
 {:catch error}
-  <div transition:fade class="w-full text-center">
+<!-- transition:fade -->
+  <div class="w-full text-center">
     <h2 class="text-2xl">Oh no!</h2>
     <p class="text-xl">There was an error preventing us from loading our content.</p>
     <p class="mt-2 text-4xl font-bold">We'll back soon!</p>

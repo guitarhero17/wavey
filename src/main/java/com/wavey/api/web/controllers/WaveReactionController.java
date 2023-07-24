@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import com.wavey.api.data.WaveReaction;
 import com.wavey.api.web.hateoas.WaveReactionModelAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -26,13 +28,18 @@ public class WaveReactionController {
 
 	@Autowired
 	private WaveReactionModelAssembler assembler;
-	
+
 	@GetMapping("/waves/{waveId}/wave-reactions")
 	public CollectionModel<EntityModel<WaveReaction>> getAllReactionsForWave(@PathVariable String waveId) {
 		List<EntityModel<WaveReaction>> reactionModels = waveReactionService.getAllReactionsForWave(waveId).stream()
 				.map(assembler::toModel).collect(Collectors.toList());
 		
 		return CollectionModel.of(reactionModels, linkTo(methodOn(WaveReactionController.class).getAllReactionsForWave(waveId)).withSelfRel());
+	}
+
+	@GetMapping("/wave-reactions/{waveReactionId}")
+	public EntityModel<WaveReaction> getWaveReaction(@PathVariable String waveReactionId) {
+		return assembler.toModel(waveReactionService.getWaveReaction(waveReactionId));
 	}
 
 	@PostMapping(path = "/waves/{waveId}/wave-reactions", consumes = "application/json")
@@ -42,30 +49,6 @@ public class WaveReactionController {
 		return ResponseEntity
 				.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
 	}
-	
-	@GetMapping("/wave-reactions/{waveReactionId}")
-	public EntityModel<WaveReaction> getWaveReaction(@PathVariable String waveReactionId) {
-		return assembler.toModel(waveReactionService.getWaveReaction(waveReactionId));
-	}
-	
-//	@PutMapping("/users/{userId}/waves/{waveId}/wave-reactions/{reacionId}")
-//	public ResponseEntity<?> updateWaveReaction(@RequestBody WaveReaction reaction, @PathVariable Long userId, @PathVariable Long waveId, @PathVariable Long waveReactionId) {
-////		reaction.setWave(new Wave(waveId, null, null, null, null, null));
-//		
-//		User user = new User();
-//		user.setId(userId);
-//		Wave wave = new Wave();
-//		wave.setId(waveId);
-//		wave.setUser(user);
-//		reaction.setWave(wave);		
-//
-//		EntityModel<WaveReaction> entityModel = assembler.toModel(reactionService.updateWaveReaction(userId, waveId, waveReactionId, reaction));
-//		
-//		return ResponseEntity
-//				.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
-//		
-//		
-//	}
 	
 	@DeleteMapping("/wave-reactions/{waveReactionId}")
 	public ResponseEntity<?> deleteWaveReaction(@PathVariable String waveReactionId) {

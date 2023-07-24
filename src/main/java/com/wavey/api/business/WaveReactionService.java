@@ -23,15 +23,8 @@ public class WaveReactionService {
 
 	@Autowired
 	private WaveRepository waveRepository;
-
-	private final ObjectMapper objectMapper = new ObjectMapper();
-
-	private static final Logger log = LoggerFactory.getLogger(WaveService.class);
 	
 	private Optional<WaveReaction> getWaveReactionOptional(String waveReactionId) {
-//		return reactionRepository.findByWaveUserId(userId).stream()
-//				.filter(reaction -> articleId.equals(reaction.getWave().getId()))
-//				.filter(reaction -> waveReactionId.equals(reaction.getId())).findAny();
 		try {
 			return waveReactionRepository.findWaveReactionById(UUID.fromString(waveReactionId));
 		} catch (IllegalArgumentException e) {
@@ -50,47 +43,20 @@ public class WaveReactionService {
 	}
 	
 	public WaveReaction getWaveReaction(String waveReactionId) {
-//		return reactionRepository.findById(waveReactionId).orElse(null);
-//		return getWaveReactionOptional(userId, articleId, waveReactionId).orElseThrow(() -> new WaveReactionNotFoundException(userId, articleId, waveReactionId));
 		return getWaveReactionOptional(waveReactionId).orElseThrow(() -> new WaveReactionNotFoundException(waveReactionId));
 	}
 	
 	public WaveReaction createWaveReaction(WaveReaction reaction, String waveId) {
 		try {
 			Wave wave = waveRepository.findWaveById(UUID.fromString(waveId)).orElseThrow(() -> new WaveNotFoundException(waveId));
-			wave.addReaction(reaction);
+			reaction.setWave(wave);
 			return waveReactionRepository.save(reaction);
 		} catch (IllegalArgumentException e) {
 			throw new UUIDhasWrongFormatException(e.getMessage());
 		}
 	}
 	
-	public WaveReaction createWaveReaction(UUID userId, UUID waveId, String waveReactionId, WaveReaction newReaction) {
-//		reactionRepository.save(reaction);
-		try {
-			return getWaveReactionOptional(waveReactionId).map(reaction -> {
-				reaction.setDate(newReaction.getDate());
-				reaction.setReaction(newReaction.getReaction());
-
-				return waveReactionRepository.save(reaction);
-			}).orElseGet(() -> {
-				User user = new User();
-				user.setId(userId);
-				Wave article = new Wave();
-				article.setId(waveId);
-				article.setUser(user);
-				newReaction.setId(UUID.fromString(waveReactionId));
-				newReaction.setWave(article);
-				return waveReactionRepository.save(newReaction);
-			});
-		} catch (IllegalArgumentException e) {
-			throw new UUIDhasWrongFormatException(e.getMessage());
-		}
-	}
-	
 	public void deleteWaveReaction(String waveReactionId) {
-//		WaveReaction reaction = getWaveReactionOptional(waveReactionId).orElseThrow(() -> new WaveReactionNotFoundException(waveReactionId));
-//		waveReactionRepository.delete(reaction);
 		try {
 			waveReactionRepository.deleteWaveReactionById(UUID.fromString(waveReactionId));
 		} catch (IllegalArgumentException e) {

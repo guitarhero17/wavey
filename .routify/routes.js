@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.12
- * File generated Fri Jun 30 2023 01:20:32 GMT+0200 (Central European Summer Time)
+ * File generated Tue Jul 25 2023 00:14:45 GMT+0200 (Central European Summer Time)
  */
 
 export const __version = "2.18.12"
-export const __timestamp = "2023-06-29T23:20:32.495Z"
+export const __timestamp = "2023-07-24T22:14:45.038Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -52,31 +52,6 @@ export const _tree = {
     {
       "isFile": true,
       "isDir": false,
-      "file": "about.svelte",
-      "filepath": "/about.svelte",
-      "name": "about",
-      "ext": "svelte",
-      "badExt": false,
-      "absolutePath": "/Users/dobromir/Documents/projects/wavey/svelte-client/pages/about.svelte",
-      "importPath": "../svelte-client/pages/about.svelte",
-      "isLayout": false,
-      "isReset": false,
-      "isIndex": false,
-      "isFallback": false,
-      "isPage": true,
-      "ownMeta": {},
-      "meta": {
-        "recursive": true,
-        "preload": false,
-        "prerender": true
-      },
-      "path": "/about",
-      "id": "_about",
-      "component": () => import('../svelte-client/pages/about.svelte').then(m => m.default)
-    },
-    {
-      "isFile": true,
-      "isDir": false,
       "file": "index.svelte",
       "filepath": "/index.svelte",
       "name": "index",
@@ -100,14 +75,14 @@ export const _tree = {
       "component": () => import('../svelte-client/pages/index.svelte').then(m => m.default)
     },
     {
-      "isFile": true,
+      "isFile": false,
       "isDir": true,
-      "file": "_layout.svelte",
-      "filepath": "/profile/_layout.svelte",
-      "name": "_layout",
-      "ext": "svelte",
+      "file": "profile",
+      "filepath": "/profile",
+      "name": "profile",
+      "ext": "",
       "badExt": false,
-      "absolutePath": "/Users/dobromir/Documents/projects/wavey/svelte-client/pages/profile/_layout.svelte",
+      "absolutePath": "/Users/dobromir/Documents/projects/wavey/svelte-client/pages/profile",
       "children": [
         {
           "isFile": true,
@@ -185,21 +160,18 @@ export const _tree = {
           "component": () => import('../svelte-client/pages/profile/index.svelte').then(m => m.default)
         }
       ],
-      "isLayout": true,
+      "isLayout": false,
       "isReset": false,
       "isIndex": false,
       "isFallback": false,
       "isPage": false,
-      "importPath": "../svelte-client/pages/profile/_layout.svelte",
       "ownMeta": {},
       "meta": {
         "recursive": true,
         "preload": false,
         "prerender": true
       },
-      "path": "/profile",
-      "id": "_profile__layout",
-      "component": () => import('../svelte-client/pages/profile/_layout.svelte').then(m => m.default)
+      "path": "/profile"
     }
   ],
   "isLayout": true,

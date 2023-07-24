@@ -1,15 +1,14 @@
 package com.wavey.api.security.business;
 
-import com.wavey.api.user.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.wavey.api.user.data.UserRepository;
+import com.wavey.api.data.UserRepository;
 import com.wavey.api.security.data.AuthenticatedUser;
-import com.wavey.api.user.data.User;
+import com.wavey.api.data.User;
 
 @Service
 public class WaveyUserDetailsService implements UserDetailsService {

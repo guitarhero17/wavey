@@ -1,8 +1,11 @@
 package com.wavey.api.init;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.TimeZone;
 
 import com.wavey.api.data.Instrument;
 import com.wavey.api.data.ReactionType;
@@ -13,6 +16,14 @@ import com.wavey.api.data.WaveReaction;
 import lombok.Getter;
 
 public class InitialData {
+
+	private static String getDateInISO8601() {
+		TimeZone tz = TimeZone.getTimeZone("UTC");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+		df.setTimeZone(tz);
+		return df.format(new Date());
+	}
+
 	private static final ArrayList<Instrument> exampleSecondaryInstruments1 = new ArrayList<>(Arrays.asList(Instrument.KEYS, Instrument.TRUMPET));
 	private static final ArrayList<Instrument> exampleSecondaryInstruments2 = new ArrayList<>(Arrays.asList(Instrument.GUITAR, Instrument.VIOLIN));
 	private static final ArrayList<Instrument> exampleSecondaryInstruments3 = new ArrayList<>(Arrays.asList(Instrument.KEYS, Instrument.TRUMPET));
@@ -41,7 +52,7 @@ public class InitialData {
 			Instrument.GUITAR, 
 			exampleSecondaryInstruments1, 
 			exampleLookingFor1, 
-			"+4921414124");
+			"johny@johny.com");
 	
 	private static final User tammy = new User(
 			"tammy2",
@@ -51,7 +62,7 @@ public class InitialData {
 			Instrument.DRUMS,
 			exampleSecondaryInstruments2,
 			exampleLookingFor2,
-			"+4921414124");
+			"tammy@tammy.com");
 	
 	private static final User dave = new User(
 			"dave3",
@@ -61,7 +72,7 @@ public class InitialData {
 			Instrument.BASS,
 			exampleSecondaryInstruments3,
 			exampleLookingFor3,
-			"+4921414124");
+			"dave@dave.com");
 	
 	private static final User jessie = new User(
 			"jessie4",
@@ -71,7 +82,7 @@ public class InitialData {
 			Instrument.VOCALS,
 			exampleSecondaryInstruments4,
 			exampleLookingFor4,
-			"+4921414124");
+			"jessie@jessie.com");
 	
 	private static final User monica = new User(
 			"monica5",
@@ -81,7 +92,7 @@ public class InitialData {
 			Instrument.KEYS,
 			exampleSecondaryInstruments5,
 			exampleLookingFor5,
-			"+4921414124");
+			"monica@monica.com");
 	
 	private static final User max = new User(
 			"max6",
@@ -91,7 +102,7 @@ public class InitialData {
 			Instrument.DRUMS,
 			exampleSecondaryInstruments6,
 			exampleLookingFor6,
-			"+4921414124");
+			"max@max.com");
 	
 	private static final User king = new User(
 			"king7",
@@ -101,7 +112,7 @@ public class InitialData {
 			Instrument.KEYS,
 			exampleSecondaryInstruments7,
 			exampleLookingFor7,
-			"+4921414124");
+			"king@king.com");
 	
 	private static final User ceric  = new User(
 			"ceric8",
@@ -111,7 +122,7 @@ public class InitialData {
 			Instrument.BASS,
 			exampleSecondaryInstruments8,
 			exampleLookingFor8,
-			"+4921414124");
+			"ceric@ceric.com");
 	
 	private static final User deyonce = new User(
 			"deyonce9",
@@ -121,26 +132,26 @@ public class InitialData {
 			Instrument.VOCALS,
 			exampleSecondaryInstruments1,
 			exampleLookingFor1,
-			"+4921414124");
+			"deyonce@deyonce.com");
 	
 	// example waves
-	private static final Wave johnyWave1 = new Wave("Guitar Dreams", johny);
-	private static final Wave johnyWave2 = new Wave("Tasty tones", johny);
-	private static final Wave tammyWave1 = new Wave("Bam-bam", tammy);
-	private static final Wave daveWave1 = new Wave("A simple bass groove", dave);
+	private static final Wave johnyWave1 = new Wave("Guitar Dreams", "guitar-dreams.mp3" , johny);
+	private static final Wave johnyWave2 = new Wave("Tasty tones", "tasty-tones.mp3", johny);
+	private static final Wave tammyWave1 = new Wave("Bam-bam", "bam-bam.mp3", tammy);
+	private static final Wave daveWave1 = new Wave("A simple bass groove","a-simple-bass-groove.mp3" , dave);
 	
 	// example wave reactions
-	private static final WaveReaction johnyWave1Reaction1 = new WaveReaction(new Date(), ReactionType.CLAP, johnyWave1);
-	private static final WaveReaction johnyWave1Reaction2 = new WaveReaction(new Date(), ReactionType.LOVE, johnyWave1);
-	private static final WaveReaction johnyWave2Reaction1 = new WaveReaction(new Date(), ReactionType.LIKE, johnyWave2);
+	private static final WaveReaction johnyWave1Reaction1 = new WaveReaction(getDateInISO8601(), ReactionType.CLAP, johnyWave1);
+	private static final WaveReaction johnyWave1Reaction2 = new WaveReaction(getDateInISO8601(), ReactionType.LOVE, johnyWave1);
+	private static final WaveReaction johnyWave2Reaction1 = new WaveReaction(getDateInISO8601(), ReactionType.LIKE, johnyWave2);
 	
-	private static final WaveReaction tammyWave1Reaction1 = new WaveReaction(new Date(), ReactionType.CLAP, tammyWave1);
-	private static final WaveReaction tammyWave1Reaction2 = new WaveReaction(new Date(), ReactionType.CLAP, tammyWave1);
-	private static final WaveReaction tammyWave1Reaction3 = new WaveReaction(new Date(), ReactionType.LOVE, tammyWave1);
+	private static final WaveReaction tammyWave1Reaction1 = new WaveReaction(getDateInISO8601(), ReactionType.CLAP, tammyWave1);
+	private static final WaveReaction tammyWave1Reaction2 = new WaveReaction(getDateInISO8601(), ReactionType.CLAP, tammyWave1);
+	private static final WaveReaction tammyWave1Reaction3 = new WaveReaction(getDateInISO8601(), ReactionType.LOVE, tammyWave1);
 	
-	private static final WaveReaction daveWave1Reaction1 = new WaveReaction(new Date(), ReactionType.LOVE, daveWave1);
-	private static final WaveReaction daveWave1Reaction2 = new WaveReaction(new Date(), ReactionType.LOVE, daveWave1);
-	private static final WaveReaction daveWave1Reaction3 = new WaveReaction(new Date(), ReactionType.CLAP, daveWave1);
+	private static final WaveReaction daveWave1Reaction1 = new WaveReaction(getDateInISO8601(), ReactionType.LOVE, daveWave1);
+	private static final WaveReaction daveWave1Reaction2 = new WaveReaction(getDateInISO8601(), ReactionType.LOVE, daveWave1);
+	private static final WaveReaction daveWave1Reaction3 = new WaveReaction(getDateInISO8601(), ReactionType.CLAP, daveWave1);
 
 	
 	@Getter

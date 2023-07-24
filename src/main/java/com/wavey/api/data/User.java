@@ -31,7 +31,7 @@ public class User {
     // A constructor for DBInitializer
     public User(String username, String password, String name, String city,
     		Instrument instrumentPrimary, ArrayList<Instrument> instrumentsSecondary,
-    		ArrayList<Instrument> lookingFor, String telephoneNumber) {
+    		ArrayList<Instrument> lookingFor, String email) {
     	this.username = username;
         this.password = new BCryptPasswordEncoder().encode(password);
         this.name = name;
@@ -39,7 +39,7 @@ public class User {
         this.instrumentPrimary = instrumentPrimary;
         this.instrumentsSecondary = instrumentsSecondary;
         this.lookingFor = lookingFor;
-        this.telephoneNumber = telephoneNumber;
+        this.email = email;
     }
 	
 	@Id
@@ -64,7 +64,7 @@ public class User {
 	private String name;
 	
 	private String city;
-	private String telephoneNumber;
+	private String email;
 	private Instrument instrumentPrimary;
 	private ArrayList<Instrument> instrumentsSecondary = new ArrayList<Instrument>();
 	private ArrayList<Instrument> lookingFor = new ArrayList<Instrument>();

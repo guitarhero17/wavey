@@ -43,8 +43,6 @@ public class WaveService {
 	private static final Logger log = LoggerFactory.getLogger(WaveService.class);
 	
 	private Optional<Wave> getWaveOptional(String waveId) {
-//		return waveRepository.findByUserName(username).stream()
-//				.filter(wave -> UUID.fromString(waveId).equals(wave.getId())).findAny();
 		try {
 			return waveRepository.findWaveById(UUID.fromString(waveId));
 		} catch (IllegalArgumentException e) {
@@ -60,7 +58,6 @@ public class WaveService {
 	}
 	
 	public Wave getWave(String waveId) {
-//		return getWaveOptional(username, waveId).orElseThrow(() -> new WaveNotFoundException(username, waveId));
 		return getWaveOptional(waveId).orElseThrow(() -> new WaveNotFoundException(waveId));
 	}
 	
@@ -105,8 +102,6 @@ public class WaveService {
 	}
 	
 	public void deleteWave(String waveId) {
-//		Wave wave = getWaveOptional(waveId).orElseThrow(() -> new WaveNotFoundException(waveId));
-//		waveRepository.delete(wave);
 		try {
 			waveRepository.deleteWaveById(UUID.fromString(waveId));
 		} catch (IllegalArgumentException e) {

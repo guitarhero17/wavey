@@ -1,5 +1,5 @@
 <script>
-  import { fetchWithJwt, retrieveAuthUserId } from '../lib/userAuthentication'
+  // import { fetchWithJwt, retrieveAuthUserId } from '../lib/userAuthentication'
   import { slide } from 'svelte/transition'
 import UploadFile from '../components/UploadFile.svelte'
 
@@ -7,14 +7,14 @@ import UploadFile from '../components/UploadFile.svelte'
 
   async function getWavesNames() {
     let wavesNames = []
-    let response = await fetchWithJwt(
-      `https://localhost:8443/users/${ retrieveAuthUserId()}/waves`)
-    let dataEmbedded = response._embedded
+    // let response = await fetchWithJwt(
+    //   `/api/users/${ retrieveAuthUserId()}/waves`)
+    // let dataEmbedded = response._embedded
 
-    if (dataEmbedded) {
-      wavesNames = dataEmbedded.waves.map(wave => wave.description)
-    }
-    // console.log(wavesNames)
+    // if (dataEmbedded) {
+    //   wavesNames = dataEmbedded.waves.map(wave => wave.description)
+    // }
+    // // console.log(wavesNames)
     return wavesNames
   }
 
@@ -40,7 +40,7 @@ import UploadFile from '../components/UploadFile.svelte'
     
   </div>
   <div class="change-waves">
-    {#await fetchWithJwt(`https://localhost:8443/users/${ retrieveAuthUserId() }/waves`)}
+    <!-- {#await fetchWithJwt(`/api/users/${ retrieveAuthUserId() }/waves`)}
       <p>Looking for waves...</p>
     {:then response}
       {#if response._embedded}
@@ -52,7 +52,7 @@ import UploadFile from '../components/UploadFile.svelte'
       {:else}
         <p>No waves yet</p>
       {/if}
-    {/await}
+    {/await} -->
     <!-- {#if getWavesNames()}
       <ul class="list-waves">
         {#each getWavesNames() as waveName}
