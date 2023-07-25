@@ -4,7 +4,7 @@
   import { fade, fly } from 'svelte/transition'
   import { sineOut } from 'svelte/easing'
   import { Wave } from 'svelte-loading-spinners'
-  import { registerUser, validateCredentials } from '../../lib/userAuthentication'
+  import { registerUser, validateCredentials } from '../../utils/userAuthentication'
 
   const { close } = getContext('simple-modal')
   let isOpen = false

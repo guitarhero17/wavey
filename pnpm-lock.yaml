@@ -5,12 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  lottie-web:
-    specifier: ^5.12.2
-    version: 5.12.2
-  svelte-content-loader:
-    specifier: ^1.1.3
-    version: 1.1.3
   sveltejs-tippy:
     specifier: ^3.0.0
     version: 3.0.0
@@ -1779,10 +1773,6 @@ packages:
       chalk: 2.4.2
     dev: true
 
-  /lottie-web@5.12.2:
-    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
-    dev: false
-
   /lru-cache@4.1.5:
     resolution: {integrity: sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==}
     dependencies:
@@ -2858,10 +2848,6 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
-
-  /svelte-content-loader@1.1.3:
-    resolution: {integrity: sha512-hXkwyAXiZ+2uNvWUHPj9U7M+8PGqgZVFNxyOHjLUF1ng4W9P9+9wlyT/bNx5BjuqoJsfjv1IZP1/5T1LfRKtYA==}
-    dev: false
 
   /svelte-hmr@0.15.2(svelte@3.59.2):
     resolution: {integrity: sha512-q/bAruCvFLwvNbeE1x3n37TYFb3mTBJ6TrCq6p2CoFbSTNhDE9oAtEfpy+wmc9So8AG0Tja+X0/mJzX9tSfvIg==}

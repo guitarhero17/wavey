@@ -42,10 +42,6 @@
   animation-direction: alternate;
 }
 
-/* .waves-bg-animated:hover::before {
-  animation-play-state: running;
-} */
-
 @keyframes animateBackground {
   0% {
     background-position-x: 0;

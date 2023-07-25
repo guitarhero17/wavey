@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte'
   import { url } from '@roxi/routify'
-  import { retrieveAuthUserId } from '../lib/userAuthentication'
+  import { retrieveAuthUserId } from '../utils/userAuthentication'
   // import { fetchWithJwt } from '../lib/userAuthentication'
   import ReactionBlock from './ReactionBlock.svelte'
   import WaveSurfer from 'wavesurfer.js'

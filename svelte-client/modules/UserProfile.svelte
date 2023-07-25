@@ -2,8 +2,8 @@
   import Modal from 'svelte-simple-modal'
   import { fade } from 'svelte/transition'
   import UserProfileContent from '../components/UserProfileContent.svelte'
-  import UserProfileCL from '../components/content-loaders/UserProfileCL.svelte'
-  import { fetchAuthorized } from '../lib/userAuthentication'
+  import { fetchAuthorized } from '../utils/userAuthentication'
+  import LoadingWave from '../components/icons/LoadingWave.svelte'
 
   export let username
   
@@ -13,13 +13,15 @@ const loadUser = async () => fetch(`/api/users/${username}`).then(res => res.jso
 </script>
 
 {#await loadUser()}
-  <UserProfileCL/>
+  <div transition:fade class="w-full flex justify-center items-center flex-col p-16">
+    <p class="text-4xl pb-4">Loading {username}'s profile</p>
+    <LoadingWave />
+  </div>
 {:then user}
   <Modal>
     <UserProfileContent { user }/>
   </Modal>
 {:catch error}
-<!-- transition:fade -->
   <div class="w-full text-center">
     <h2 class="text-2xl">Oh no!</h2>
     <p class="text-xl">There was an error preventing us from loading our content.</p>

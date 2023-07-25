@@ -2,11 +2,11 @@
   import { url } from '@roxi/routify'
   import { getContext } from 'svelte';
   import { fade } from 'svelte/transition'
-  import { retrieveAuthUserId } from '../lib/userAuthentication'
+  import { retrieveAuthUserId } from '../utils/userAuthentication'
   import InfoInstrument from './InfoInstrument.svelte'
   import DeleteModal from './modal/DeleteModal.svelte'
   import Waves from './Waves.svelte'
-  import getPlayerType from '../lib/instrumentToPlayer'
+  import getPlayerType from '../utils/instrumentToPlayer'
 
   export let user
 
@@ -94,31 +94,4 @@
     </section>
   <!-- {/if} -->
 </article>
-
-<style>
-
-  .waves-bg-animated--chathead::before {
-    opacity: 0;
-    transition: opacity 300ms ease-in;
-    width: 150%;
-    height: 150%;
-    top: -11px;
-    left: -18%;
-    transform: rotate(-30deg);
-    animation-timing-function: linear;
-  }
-
-  .waves-bg-animated--chathead:hover::before {
-    opacity: 1;
-  }
-
-  .chathead {
-    transition: transform 300ms ease-in;
-  }
-
-  .chathead:hover{
-    transform: scale(1.1);
-    @apply border-waveyBrown;
-  }
-</style>
 

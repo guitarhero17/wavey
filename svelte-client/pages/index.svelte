@@ -1,11 +1,11 @@
 <script>
   import { onMount } from 'svelte'
-  import UserPreviewBoxCl from '../components/content-loaders/UserPreviewBoxCL.svelte'
   import UserPreviewBox from '../components/UserPreviewBox.svelte'
-  import LoginModalContent from '../components/modal/LoginModalContent.svelte'
+  // import LoginModalContent from '../components/modal/LoginModalContent.svelte'
   import { authenticatedUsername } from '../store'
-  import { USERS_URL, isAuthenticated, retrieveAuthUserId, retrieveUserCredentials } from '../lib/userAuthentication'
+  import { USERS_URL, isAuthenticated, retrieveAuthUserId, retrieveUserCredentials } from '../utils/userAuthentication'
   import { fade } from 'svelte/transition'
+  import LoadingWave from '../components/icons/LoadingWave.svelte'
   // import { beforeUrlChange } from '@roxi/routify'
 
   // $beforeUrlChange((event, store) => {
@@ -24,8 +24,6 @@
   onMount(() => {
     retrieveUserCredentials()
   })
-
-  let cityGlobal = 'your place'
 
 const loadUsers = async () => fetch(USERS_URL).then(res => res.json())
 
@@ -46,9 +44,9 @@ const loadUsers = async () => fetch(USERS_URL).then(res => res.json())
   <article class="px-5">
     <ul class="w-full flex flex-wrap">
       {#await loadUsers()}
-        {#each Array(10) as _,i}
-          <UserPreviewBoxCl />
-        {/each}
+        <div transition:fade class="absolute w-full flex justify-center p-8">
+          <LoadingWave />
+        </div>
       {:then data}
         {#each loadFilteredUsers(data._embedded.users) as user}
           <UserPreviewBox {user} />
@@ -59,9 +57,6 @@ const loadUsers = async () => fetch(USERS_URL).then(res => res.json())
           <p class="text-xl">There was an error preventing us from loading our content.</p>
           <p class="mt-2 text-4xl font-bold">We'll back soon!</p>
         </div>
-        {#each Array(10) as _,i}
-          <UserPreviewBoxCl animateCL = { false }/>
-        {/each}
       {/await}
     </ul>
   </article>

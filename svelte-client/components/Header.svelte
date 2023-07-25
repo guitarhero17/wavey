@@ -1,38 +1,16 @@
 <script>
-  import { onMount } from 'svelte'
   import { slide } from 'svelte/transition'
   import { url } from '@roxi/routify'
   import { getContext } from 'svelte'
-
-  import lottie from 'lottie-web'
-  import { isAuthenticated, logCurrentUserOut } from '../lib/userAuthentication'
+  import { isAuthenticated, logCurrentUserOut } from '../utils/userAuthentication'
   import LoginModalContent from './modal/LoginModalContent.svelte'
+  import HamburgerMenuToggle from './icons/HamburgerMenuToggle.svelte'
 
-  let lottieDirection = 1
-  let lottieAnimation
   let mobileHeaderVisible = false
   const { open } = getContext('simple-modal')
 
-  onMount(() => {
-    lottieAnimation = lottie.loadAnimation({
-      container: document.getElementById('hamburger-menu'),
-      renderer: 'svg',
-      loop: false,
-      autoplay: false,
-      path: $url('/images/header/lottie/menuV4_white.json'),
-    })
-    lottieAnimation.setSpeed(2.5)
-  })
-
   function closeMobileHeader() {
     mobileHeaderVisible = false
-    transformHamburgerIcon()
-  }
-
-  function transformHamburgerIcon() {
-    lottieAnimation.setDirection(lottieDirection)
-    lottieAnimation.play()
-    lottieDirection = -lottieDirection
   }
 
   function performLogging() { 
@@ -58,7 +36,7 @@
     </a>
   </div>
   <label for="menu-toggle" class="pointer-cursor hidden m:block">
-    <div id="hamburger-menu" on:click={transformHamburgerIcon} />
+    <HamburgerMenuToggle isOpen={mobileHeaderVisible}/>
   </label>
   <input
     class="hidden"
@@ -66,24 +44,11 @@
     id="menu-toggle"
     bind:checked={mobileHeaderVisible}
   />
-  <div class="flex items-center w-auto m:hidden" id="menu">
+  <div class="flex items-center w-auto m:hidden">
     <button class="p-4 m:py-3 m:px-0 hover:text-waveyYellow m:text-center m:text-xl m:font-bold"
       on:click={performLogging}>
       {isAuthenticated ? 'Log Out' : 'Log In'}
     </button>
-    <!-- <li>
-        <div class="relative flex w-full m:w-1/2 s:w-full m:mx-auto px-4 flex-wrap items-stretch">
-          <div class="flex">
-            <span class="font-normal leading-snug flex text-center white-space-no-wrap border border-solid border-orange-600 rounded-full text-sm bg-orange-100 items-center rounded-r-none pl-2 border-r-0 placeholder-waveyGreen">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </span>
-          </div>
-          <input type="text" class="px-2 py-1 h-8 border border-solid  border-orange-600 rounded-full text-sm leading-snug text-orange-700 bg-orange-100 shadow-none outline-none focus:outline-none w-full font-normal rounded-l-none flex-1 border-l-0 placeholder-orange-300" placeholder="Search orange" />
-        </div>
-      </li> -->
     {#if isAuthenticated}
       <button
         class="ml-4 m:ml-0 flex items-center justify-start mb-0 m:mb-4 pointer-cursor"
