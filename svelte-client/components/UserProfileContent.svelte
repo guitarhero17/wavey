@@ -75,7 +75,7 @@
           {#if user.lookingFor && user.lookingFor.length > 0}
             <div class="text-3xl mb-4">{ username == retrieveAuthUserId() ? 'You are currently ' : 'Currently ' }on the lookout for</div>
             {#each user.lookingFor as instrument}
-              <div class="info-lookingFor-playerType text-xl mb-2">{ getPlayerType(instrument) }</div>
+              <div class="text-xl mb-2">{ getPlayerType(instrument) }</div>
             {/each}
           {/if}
         </div>

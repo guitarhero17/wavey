@@ -30,7 +30,7 @@
     <a href={$url('/')} on:click={closeMobileHeader}>
       <img
         class="block w-8 h-8"
-        src={$url('/images/svg/Logo_2.svg')}
+        src={$url('/images/icons/Logo_2.svg')}
         alt="Wavey Logo"
       />
     </a>
@@ -56,7 +56,7 @@
         <a href={$url('/profile')} class="m:hidden">
           <img
             class="rounded-full w-10 h-10 border-2 border-transparent hover:bg-waveyYellow bg-white"
-            src={$url('../images/svg/profile_placeholder.svg')}
+            src={$url('../images/icons/profile_placeholder.svg')}
             alt="profile placeholder"
           />
         </a>
@@ -89,7 +89,7 @@
       >
         <img
           class="m:hidden rounded-full w-10 h-10 border-2 border-transparent hover:border-indigo-400 bg-white"
-          src={$url('/images/svg/profile_placeholder.svg')}
+          src={$url('/images/icons/profile_placeholder.svg')}
           alt="profile placeholder"
         />
         <p

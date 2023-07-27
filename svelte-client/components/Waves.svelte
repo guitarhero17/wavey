@@ -60,23 +60,22 @@
       Hear { firstName }'s waves
     </div>
     {#each data._embedded.waves as wave}
-    <div class="mt-6 px-5">
-      <div id={`wave-${username}-${wave.id}`} />
-      <div class="flex justify-between items-center mt-6">
-        <div class="flex items-center">
-          <div
-            class:playing={currentlyPlaying == wave.id}
-            class="button mr-4"
-            on:click={() => togglePlay(wave.id)}
-          />
-          <!-- mr-4 box-border w-0 h-5 bg-transparent transition-all duration-100 cursor-pointer border-solid border-l-waveyBrown border-y-[10px] border-l-[15px] -->
-          <div class="text-xl">
-            {wave.title}
+      <div class="mt-6 px-5">
+        <div id={`wave-${username}-${wave.id}`} />
+        <div class="flex justify-between items-center mt-6">
+          <div class="flex items-center">
+            <div
+              class:playing={currentlyPlaying == wave.id}
+              class="playButton mr-4"
+              on:click={() => togglePlay(wave.id)}
+            />
+            <div class="text-xl">
+              {wave.title}
+            </div>
           </div>
+          <ReactionBlock waveId={wave.id}/>
         </div>
-        <ReactionBlock waveId={wave.id}/>
       </div>
-    </div>
     {/each}
   {:else}
   <p class="text-4xl mt-2">{ username == retrieveAuthUserId() ? 'You have not ' : firstName + ' has not '}posted any waves yet...</p>
@@ -87,28 +86,5 @@
 
 <style>
 
-  .button {
-    border: 0;
-    box-sizing: border-box;
-    width: 0;
-    height: 20px;
-    /* waveyBrown */
-    background-color: transparent;
-    border-color: transparent transparent transparent theme('colors.waveyBrown');
-    transition: 100ms all ease;
-    cursor: pointer;
-    border-style: solid;
-    border-width: 10px 0 10px 15px;
-  }
 
-  .button.playing {
-    border-style: double;
-    border-width: 0px 0 0px 15px;
-    border-color: transparent transparent transparent theme('colors.waveyYellow');
-  }
-  /* .playing {
-    border-style: double !important;
-    border-left-width: 15px !important;
-    border-left-color: theme('colors.waveyYellow') !important;
-  } */
 </style>

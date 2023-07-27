@@ -72,7 +72,7 @@
 {#if isOpen}
   <div transition:fly={{ y: '100%', easing: sineOut, duration: 600 }} class="rounded-3xl absolute top-0 left-0 w-full h-full grid place-content-center bg-gray-900 z-10 px-5">
     <img 
-      src={'/images/svg/back-arrow.svg'}
+      src={'/images/icons/back-arrow.svg'}
       on:click="{ () => isOpen = false }"
       on:keydown="{ () => isOpen = false }"
       class="absolute top-5 left-5 w-10 h-10 -rotate-90 cursor-pointer" alt="Back arrow"/>
