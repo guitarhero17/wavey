@@ -4,18 +4,68 @@
   import UploadFile from '../components/UploadFile.svelte'
   import LoadingWave from "../components/icons/LoadingWave.svelte";
   import {url} from "@roxi/routify";
-  import EditButton from "../components/icons/EditButton.svelte";
+  import IconButton from "../components/edit/IconButton.svelte";
   import capitalizeFirstLetter from "../utils/capitalizeFirstLetter.js";
   import InfoInstrument from "../components/InfoInstrument.svelte";
   import getPlayerType from "../utils/instrumentToPlayer.js";
+  import EditableText from "../components/edit/EditableText.svelte";
+  import InstrumentSelect from "../components/edit/InstrumentSelect.svelte";
+  import InstrumentsCheckboxes from "../components/edit/InstrumentsCheckboxes.svelte";
+  import LookingForCheckboxes from "../components/edit/LookingForCheckboxes.svelte";
 
+  const userNonEditableFields = ['username', '_links']
+  let isEditingUserDataActive = false
   let showPictureUpload = false
   let playingWave = ''
 
-  const loadUser = async () => fetch(`/api/users/${"johny1"}`).then(res => res.json())
+  let editedUserData = {}
+  $: console.log(editedUserData)
+
+  let loadUser = async () => fetch(`/api/users/${"johny1"}`).then(res => res.json())
   const loadUserWaves = async () => fetch(`/api/users/${"johny1"}/waves`).then(res => res.json())
 
-  const userNonEditableFields = ['username', '_links']
+
+  function getEditableFieldLabel (field) {
+    switch(field) {
+      case 'email':
+        return 'E-Mail'
+      case 'instrumentPrimary':
+        return 'Primary instrument'
+      case 'instrumentsSecondary':
+        return 'Secondary instruments'
+      case 'lookingFor':
+        return 'Looking For'
+      default:
+        return capitalizeFirstLetter(field)
+    }
+  }
+
+  function setEditedUserField(field, newValue) {
+    editedUserData[field] = newValue
+    editedUserData = editedUserData
+  }
+
+  function cancelEdit() {
+    isEditingUserDataActive = false
+  }
+
+  function updateUserData() {
+    fetch(`/api/users/${'johny1'}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/merge-patch+json'
+      },
+      body: JSON.stringify(editedUserData)
+    }).then(res => {
+      if (res.status === 204) {
+        isEditingUserDataActive = false
+        editedUserData = {}
+        loadUser = loadUser
+      } else {
+        console.log('error: ', res.status)
+      }
+    })
+  }
 
   function togglePlaying(waveId) {
     if (playingWave !== waveId) {
@@ -27,21 +77,6 @@
       playingWave = ''
     }
   }
-
-  // async function getWavesNames() {
-  //   let wavesNames = []
-  //   let response = await fetchWithJwt(
-  //     `/api/users/${ retrieveAuthUserId()}/waves`)
-  //   let dataEmbedded = response._embedded
-  //
-  //   if (dataEmbedded) {
-  //     wavesNames = dataEmbedded.waves.map(wave => wave.description)
-  //   }
-  //   // console.log(wavesNames)
-  //   return wavesNames
-  // }
-
-
 </script>
 
 <article class="edit-profile px-5">
@@ -51,47 +86,69 @@
       <LoadingWave />
     </div>
   {:then data}
-    <div class="mt-6 flex justify-between items-center s:flex-col-reverse s:items-start p-4 border-2 border-waveyGreen rounded-xl">
+    <div class:blinking-border={isEditingUserDataActive} class="mt-6 flex justify-between items-start s:flex-col-reverse p-4 border-2 border-waveyGreen rounded-xl">
       <div class="s:mt-6">
-        {#each Object.keys(data).filter(k => !userNonEditableFields.includes(k)) as field}
-          <div class="edit-field-block">
-            <p class="text-3xl">
-              {#if field === 'email'}
-                E-Mail
-              {:else if field === 'instrumentPrimary'}
-                Primary instrument
-              {:else if field === 'instrumentsSecondary'}
-                Secondary instruments
-              {:else if field === 'lookingFor'}
-                Looking For
-              {:else}
-                {capitalizeFirstLetter(field)}
-              {/if}
-            </p>
-            <div class="flex items-center mt-2">
-              <div class="text-2xl">
-                {#if field === 'instrumentPrimary'}
-                  <InfoInstrument instrument={data[field]} isPrimary/>
-                {:else if field === 'instrumentsSecondary'}
-                  {#each data[field] as secondaryInstrument}
-                    <div class="secondary-instrument">
-                      <InfoInstrument instrument={secondaryInstrument} />
-                    </div>
-                  {/each}
-                {:else if field === 'lookingFor'}
-                  {#each data[field] as lfField}
-                   <div class="text-xl mb-2">{ getPlayerType(lfField) }</div>
-                  {/each}
-                {:else}
-                  {data[field]}
-                {/if}
+        {#if isEditingUserDataActive}
+          {#each Object.keys(data).filter(k => !userNonEditableFields.includes(k)) as field}
+            <div class="edit-field-block">
+              <p class="text-3xl">
+                {getEditableFieldLabel(field)}
+              </p>
+              <div class="flex items-center mt-2">
+                <div class="text-2xl pl-4">
+                  {#if field === 'instrumentPrimary'}
+                    <InstrumentSelect value={data[field]} on:submit={i => setEditedUserField(field, i.detail)} />
+                  {:else if field === 'instrumentsSecondary'}
+                    <InstrumentsCheckboxes values={data[field]} on:submit={i => setEditedUserField(field, i.detail)}/>
+                  {:else if field === 'lookingFor'}
+                    <LookingForCheckboxes values={data[field]} on:submit={i => setEditedUserField(field, i.detail)}/>
+                  {:else}
+                    <EditableText value={data[field]} isEditingActive={isEditingUserDataActive} on:submit={i => setEditedUserField(field, i.detail)} />
+                  {/if}
+                </div>
               </div>
             </div>
-          </div>
-        {/each}
+          {/each}
+        {:else}
+          {#each Object.keys(data).filter(k => !userNonEditableFields.includes(k)) as field}
+            <div class="edit-field-block">
+              <p class="text-3xl">
+                {getEditableFieldLabel(field)}
+              </p>
+              <div class="flex items-center mt-2">
+                <div class="text-2xl pl-4">
+                  {#if field === 'instrumentPrimary'}
+                    <InfoInstrument instrument={data[field]} isPrimary/>
+                  {:else if field === 'instrumentsSecondary'}
+                    {#each data[field] as secondaryInstrument}
+                      <div class="secondary-instrument">
+                        <InfoInstrument instrument={secondaryInstrument} />
+                      </div>
+                    {/each}
+                  {:else if field === 'lookingFor'}
+                    {#each data[field] as lfField}
+                      <div class="text-xl mb-2">{ getPlayerType(lfField) }</div>
+                    {/each}
+                  {:else}
+                    <EditableText value={data[field]} isEditingActive={isEditingUserDataActive} on:submit={i => setEditedUserField(field, i.detail)} />
+                  {/if}
+                </div>
+              </div>
+            </div>
+          {/each}
+        {/if}
     </div>
       <div class="flex-grow flex justify-center">
-        <EditButton onClick={() => console.log('hey')}/>
+        {#if isEditingUserDataActive}
+          <div>
+            <IconButton type="save" on:click={updateUserData}/>
+          </div>
+          <div class="ml-4">
+            <IconButton type="cancel" on:click={cancelEdit}/>
+          </div>
+        {:else}
+          <IconButton on:click={() => (isEditingUserDataActive = true)}/>
+        {/if}
       </div>
     </div>
   {/await}
@@ -128,7 +185,7 @@
               />
             </div>
             <div class="ml-2 s:ml-0">
-              <EditButton onClick={() => console.log('hey')} />
+              <IconButton onClick={() => console.log('hey')} />
             </div>
           </li>
         {/each}

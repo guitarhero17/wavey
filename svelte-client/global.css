@@ -78,3 +78,18 @@
   border-width: 0px 0 0px 15px;
   border-color: transparent transparent transparent theme('colors.waveyYellow');
 }
+
+.blinking-border {
+  /*waveyYellow*/
+  border-color: rgba(242, 247, 158, 1);
+  animation: fadeBorderColor 750ms infinite alternate;
+}
+
+@keyframes fadeBorderColor  {
+  0% {
+    border-color: rgb(242, 247, 158, 1);
+  }
+  100% {
+    border-color: rgb(242, 247, 158, 0.5);
+  }
+}
