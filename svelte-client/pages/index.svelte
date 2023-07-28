@@ -1,7 +1,6 @@
 <script>
   import { onMount } from 'svelte'
   import UserPreviewBox from '../components/UserPreviewBox.svelte'
-  // import LoginModalContent from '../components/modal/LoginModalContent.svelte'
   import { authenticatedUsername } from '../store'
   import { USERS_URL, isAuthenticated, retrieveAuthUserId, retrieveUserCredentials } from '../utils/userAuthentication'
   import { fade } from 'svelte/transition'

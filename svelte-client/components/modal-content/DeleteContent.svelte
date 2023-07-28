@@ -1,10 +1,10 @@
 <script>
-import { getContext } from 'svelte';
+  import {createEventDispatcher, getContext} from 'svelte';
 import { retrieveAuthUserId, logCurrentUserOut } from '../../utils/userAuthentication';
 
-const { close } = getContext('simple-modal')
-
 let userDeleted = false
+let wrapperDiv
+const customCloseEvent = new CustomEvent('close-dialog', { bubbles: true})
   
 async function handleYes () {
   // if (retrieveAuthUserId()) {
@@ -17,6 +17,8 @@ async function handleYes () {
 
   if (response.ok) {
     userDeleted = true
+    wrapperDiv.dispatchEvent(customCloseEvent)
+    // dispatch('close')
     // setTimeout(() => {
     //   logCurrentUserOut()
     // }, 300)
@@ -27,17 +29,17 @@ async function handleYes () {
 }
 
 function handleNo() {
-  close()
+  wrapperDiv.dispatchEvent(customCloseEvent)
 }
 </script>
 
-<div class="flex justify-center items-center flex-col p-10">
+<div bind:this={wrapperDiv} class="flex justify-center items-center flex-col p-10">
   <div class="text-4xl text-red-600 text-center">Are you sure you want to delete your account?</div>
   <div class="mt-7 w-1/2 flex justify-between">
-    <button on:click={handleNo} class="text-2xl text-waveyGreen">
+    <button on:click={handleNo} class="text-2xl text-waveyGreen hover:scale-110">
       No
     </button>
-    <button on:click={handleYes} class="text-2xl text-waveyGreen">
+    <button on:click={handleYes} class="text-2xl text-waveyGreen hover:scale-110">
       Yes
     </button>
   </div>

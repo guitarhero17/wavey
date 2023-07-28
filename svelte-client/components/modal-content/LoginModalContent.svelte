@@ -1,17 +1,17 @@
 <script>
-  import { getContext } from 'svelte'
   import { goto } from '@roxi/routify'
   import { fade, fly } from 'svelte/transition'
   import { sineOut } from 'svelte/easing'
   import { Wave } from 'svelte-loading-spinners'
   import { registerUser, validateCredentials } from '../../utils/userAuthentication'
 
-  const { close } = getContext('simple-modal')
+  let wrapperDiv
   let isOpen = false
   let isFormSubmitting = false
   let responseValid = false
   let badCredentials = false
   let responseRegisterValid = false
+  const customCloseEvent = new CustomEvent('close-dialog', { bubbles: true})
 
   const handleSubmitLogin = async (e) => {
     isFormSubmitting = true
@@ -21,7 +21,8 @@
     responseValid = areCredentialsValid
 
     setTimeout(() => {
-      close()
+      // close()
+      wrapperDiv.dispatchEvent(customCloseEvent)
       $goto('/index')
     }, 600)
   }
@@ -43,7 +44,7 @@
   }
 </script>
 
-<div class="login-side">
+<div bind:this={wrapperDiv} class="login-side">
   <h2 class="text-center s:text-3xl text-4xl">Log in to your Wavey account</h2>
   <div transition:fade class:hidden = { !badCredentials || responseValid } class="text-red-500 text-center"> Username or password wrong. Try again.</div>
 
@@ -54,11 +55,11 @@
 
     <input class="text-center rounded-md text-black h-10 s:h-6 block" name="username" required min="4" placeholder="Wavey Username"/>
     <input class="text-center rounded-md text-black h-10 s:h-6 block mt-3" name="password" required min="6" type="password" placeholder="Password" />
-    <button type="submit" class:hidden={ isFormSubmitting || responseValid } class="mt-4 text-xl text-waveyGreen hover:underline hover:border-waveyGreen">Log In</button>
+    <button type="submit" class:hidden={ isFormSubmitting || responseValid } class="mt-4 text-xl text-waveyGreen hover:scale-110 hover:border-waveyGreen">Log In</button>
 
     <div class:hidden={ isFormSubmitting || responseValid } class="text-center grid place-items-center mt-10">
       <p class="text-xl">Don't have an account yet?</p>
-      <button type="button" class="text-waveyYellow mt-2" on:click="{ () => isOpen = true }">Sign up here</button>
+      <button type="button" class="text-waveyYellow mt-2 hover:scale-110" on:click="{ () => isOpen = true }">Sign up here</button>
     </div>
 
     {#if isFormSubmitting}
@@ -106,8 +107,9 @@
     cursor: default;
     opacity: 0.5;
 
-    &:hover {
-      border: none;
-    }
+
   }
+  button:disabled:hover {
+     border: none;
+   }
 </style>

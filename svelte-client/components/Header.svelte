@@ -1,23 +1,23 @@
 <script>
   import { slide } from 'svelte/transition'
   import { url } from '@roxi/routify'
-  import { getContext } from 'svelte'
   import { isAuthenticated, logCurrentUserOut } from '../utils/userAuthentication'
-  import LoginModalContent from './modal/LoginModalContent.svelte'
+  import Modal from './Modal.svelte'
   import HamburgerMenuToggle from './icons/HamburgerMenuToggle.svelte'
+  import LoginModalContent from "./modal-content/LoginModalContent.svelte";
 
-  let mobileHeaderVisible = false
-  const { open } = getContext('simple-modal')
+  let isLoginModalOpen = false
+  let isMobileHeaderVisible = false
 
   function closeMobileHeader() {
-    mobileHeaderVisible = false
+    isMobileHeaderVisible = false
   }
 
   function performLogging() { 
     if (isAuthenticated) {
       logCurrentUserOut()
     } else {
-      open(LoginModalContent)
+      isLoginModalOpen = true
     }
     closeMobileHeader()
   }
@@ -36,13 +36,13 @@
     </a>
   </div>
   <label for="menu-toggle" class="pointer-cursor hidden m:block">
-    <HamburgerMenuToggle isOpen={mobileHeaderVisible}/>
+    <HamburgerMenuToggle isOpen={isMobileHeaderVisible}/>
   </label>
   <input
     class="hidden"
     type="checkbox"
     id="menu-toggle"
-    bind:checked={mobileHeaderVisible}
+    bind:checked={isMobileHeaderVisible}
   />
   <div class="flex items-center w-auto m:hidden">
     <button class="p-4 m:py-3 m:px-0 hover:text-waveyYellow m:text-center m:text-xl m:font-bold"
@@ -69,7 +69,7 @@
     {/if}
   </div>
 
-  {#if mobileHeaderVisible}
+  {#if isMobileHeaderVisible}
     <div
       transition:slide
       class="flex items-center m:w-full m:flex-col"
@@ -99,6 +99,11 @@
         </p>
       </a>
     </div>
+  {/if}
+  {#if isLoginModalOpen}
+    <Modal on:close={() => isLoginModalOpen = false}>
+      <LoginModalContent />
+    </Modal>
   {/if}
 </header>
 

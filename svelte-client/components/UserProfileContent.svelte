@@ -4,17 +4,17 @@
   import { fade } from 'svelte/transition'
   import { retrieveAuthUserId } from '../utils/userAuthentication'
   import InfoInstrument from './InfoInstrument.svelte'
-  import DeleteModal from './modal/DeleteModal.svelte'
+  import Modal from "./Modal.svelte";
   import Waves from './Waves.svelte'
   import getPlayerType from '../utils/instrumentToPlayer'
+  import DeleteContent from "./modal-content/DeleteContent.svelte";
 
   export let user
 
-  const { open } = getContext('simple-modal')
-
-  const username = user.username
-
-  const firstName = user.name.split(' ')[0]
+  // const { open } = getContext('simple-modal')
+  let isDeleteModalVisible = false
+  let username = user.username
+  let firstName = user.name.split(' ')[0]
 
   const tippyProps = {
     content: `Call ${user.name}`,
@@ -90,7 +90,12 @@
   </section>
   <!-- {#if username == retrieveAuthUserId()} -->
     <section class="w-full bg-black flex justify-center items-center py-10">
-      <button on:click={ () => open(DeleteModal) } class="text-4xl text-red-500">Delete your profile</button>
+      <button on:click={ () => (isDeleteModalVisible = true) } class="text-4xl text-red-500">Delete your profile</button>
+      {#if isDeleteModalVisible}
+        <Modal on:close={() => (isDeleteModalVisible = false) }>
+          <DeleteContent />
+        </Modal>
+      {/if}
     </section>
   <!-- {/if} -->
 </article>

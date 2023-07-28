@@ -85,6 +85,11 @@
   animation: fadeBorderColor 750ms infinite alternate;
 }
 
+body.fixed {
+  position: fixed;
+  width: 100%;
+}
+
 @keyframes fadeBorderColor  {
   0% {
     border-color: rgb(242, 247, 158, 1);

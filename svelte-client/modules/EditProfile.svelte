@@ -1,25 +1,31 @@
 <script>
   // import { fetchWithJwt, retrieveAuthUserId } from '../lib/userAuthentication'
   import { slide, fade } from 'svelte/transition'
+  import {url} from "@roxi/routify";
+
   import UploadFile from '../components/UploadFile.svelte'
   import LoadingWave from "../components/icons/LoadingWave.svelte";
-  import {url} from "@roxi/routify";
   import IconButton from "../components/edit/IconButton.svelte";
-  import capitalizeFirstLetter from "../utils/capitalizeFirstLetter.js";
   import InfoInstrument from "../components/InfoInstrument.svelte";
-  import getPlayerType from "../utils/instrumentToPlayer.js";
   import EditableText from "../components/edit/EditableText.svelte";
   import InstrumentSelect from "../components/edit/InstrumentSelect.svelte";
   import InstrumentsCheckboxes from "../components/edit/InstrumentsCheckboxes.svelte";
   import LookingForCheckboxes from "../components/edit/LookingForCheckboxes.svelte";
+  import Modal from "../components/Modal.svelte";
+  import WaveEditModal from "../components/modal-content/WaveEditModal.svelte";
+  import getPlayerType from "../utils/instrumentToPlayer.js";
+  import capitalizeFirstLetter from "../utils/capitalizeFirstLetter.js";
+  import {getContext} from "svelte";
 
+
+  const { open } = getContext('simple-modal')
   const userNonEditableFields = ['username', '_links']
+
   let isEditingUserDataActive = false
+  let isWaveEditModalVisible = false
   let showPictureUpload = false
   let playingWave = ''
-
   let editedUserData = {}
-  $: console.log(editedUserData)
 
   let loadUser = async () => fetch(`/api/users/${"johny1"}`).then(res => res.json())
   const loadUserWaves = async () => fetch(`/api/users/${"johny1"}/waves`).then(res => res.json())
@@ -171,26 +177,31 @@
         <div class="p-4 border-2 border-waveyGreen rounded-xl">
           <p class="text-4xl">Edit your waves</p>
           <ul class="pt-8">
-        {#each data._embedded.waves as wave}
-          <li class="wave flex items-center s:flex-col-reverse s:items-start">
-            <div class="flex items-center">
-              <p class="text-2xl">{ wave.title }</p>
-              <audio id={`wave-${wave.id}`} class="wave-audio">
-                <source src={$url(`../waves/${'johny1'}/${wave.fileName}`)} type="audio/mpeg"/>
-              </audio>
-              <button
-                class:playing={playingWave === wave.id}
-                class="playButton ml-4"
-                on:click={() => togglePlaying(wave.id)}
-              />
-            </div>
-            <div class="ml-2 s:ml-0">
-              <IconButton onClick={() => console.log('hey')} />
-            </div>
-          </li>
-        {/each}
-        </ul>
+            {#each data._embedded.waves as wave}
+              <li class="wave flex items-center s:flex-col-reverse s:items-start">
+                <div class="flex items-center">
+                  <p class="text-2xl">{ wave.title }</p>
+                  <audio id={`wave-${wave.id}`} class="wave-audio">
+                    <source src={$url(`../waves/${'johny1'}/${wave.fileName}`)} type="audio/mpeg"/>
+                  </audio>
+                  <button
+                    class:playing={playingWave === wave.id}
+                    class="playButton ml-4"
+                    on:click={() => togglePlaying(wave.id)}
+                  />
+                </div>
+                <div class="ml-2 s:ml-0">
+                  <IconButton on:click={() => (isWaveEditModalVisible = true) } />
+                </div>
+              </li>
+            {/each}
+          </ul>
         </div>
+        {#if isWaveEditModalVisible}
+          <Modal on:close={() => isWaveEditModalVisible = false}>
+            heyoo
+          </Modal>
+        {/if}
       {/if}
     {/await}
     <div class="upload-waves"></div>
