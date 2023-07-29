@@ -82,7 +82,7 @@ public class WaveController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@DeleteMapping("/{waveId}")
+	@DeleteMapping("/waves/{waveId}")
 	public ResponseEntity<?> deleteWave(@PathVariable String waveId) {
 		waveService.deleteWave(waveId);
 		return ResponseEntity.noContent().build();

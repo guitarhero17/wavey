@@ -2,8 +2,8 @@
   import { goto } from '@roxi/routify'
   import { fade, fly } from 'svelte/transition'
   import { sineOut } from 'svelte/easing'
-  import { Wave } from 'svelte-loading-spinners'
   import { registerUser, validateCredentials } from '../../utils/userAuthentication'
+  import LoadingWave from "../icons/LoadingWave.svelte";
 
   let wrapperDiv
   let isOpen = false
@@ -62,9 +62,9 @@
       <button type="button" class="text-waveyYellow mt-2 hover:scale-110" on:click="{ () => isOpen = true }">Sign up here</button>
     </div>
 
-    {#if isFormSubmitting}
+    {#if !isFormSubmitting}
       <div class="mt-6 flex justify-center">
-        <Wave size="60" color="#37C9B7" unit="px" duration="1s"/>
+        <LoadingWave />
       </div>
     {/if}
   </form>

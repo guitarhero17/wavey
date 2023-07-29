@@ -1,5 +1,4 @@
 <script>
-  import Modal from 'svelte-simple-modal'
   import { fade } from 'svelte/transition'
   import UserProfileContent from '../components/UserProfileContent.svelte'
   import { fetchAuthorized } from '../utils/userAuthentication'
@@ -18,9 +17,7 @@ const loadUser = async () => fetch(`/api/users/${username}`).then(res => res.jso
     <LoadingWave />
   </div>
 {:then user}
-  <Modal>
-    <UserProfileContent { user }/>
-  </Modal>
+  <UserProfileContent { user }/>
 {:catch error}
   <div class="w-full text-center">
     <h2 class="text-2xl">Oh no!</h2>

@@ -12,25 +12,26 @@
         original = value
     })
 
-    function onSubmit() {
-        if (value !== original) {
-            dispatch('submit', value)
-        }
+    function onInput(e) {
+        console.log(e.target.value)
+        dispatch('change', e.target.value)
     }
 
     function onKeydown(e) {
-        if (e.key === 'Escape') {
-            e.preventDefault()
-            value = original
+        if (e.key === 'Enter') {
+            dispatch('submit')
         }
     }
 </script>
 
 {#if isEditingActive}
-    <form on:keydown={onKeydown} on:change={onSubmit}>
+    <form on:submit|preventDefault>
         <input
            class="bg-black border blinking-border rounded-xl pl-2"
-           bind:value={value}
+           type="text"
+           value={value}
+           on:input={onInput}
+           on:keydown={onKeydown}
            {required} />
     </form>
 {:else}

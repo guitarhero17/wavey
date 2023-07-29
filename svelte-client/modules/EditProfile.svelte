@@ -1,9 +1,8 @@
 <script>
   // import { fetchWithJwt, retrieveAuthUserId } from '../lib/userAuthentication'
-  import { slide, fade } from 'svelte/transition'
+  import { fade } from 'svelte/transition'
   import {url} from "@roxi/routify";
 
-  import UploadFile from '../components/UploadFile.svelte'
   import LoadingWave from "../components/icons/LoadingWave.svelte";
   import IconButton from "../components/edit/IconButton.svelte";
   import InfoInstrument from "../components/InfoInstrument.svelte";
@@ -12,23 +11,22 @@
   import InstrumentsCheckboxes from "../components/edit/InstrumentsCheckboxes.svelte";
   import LookingForCheckboxes from "../components/edit/LookingForCheckboxes.svelte";
   import Modal from "../components/Modal.svelte";
-  import WaveEditModal from "../components/modal-content/WaveEditModal.svelte";
   import getPlayerType from "../utils/instrumentToPlayer.js";
   import capitalizeFirstLetter from "../utils/capitalizeFirstLetter.js";
-  import {getContext} from "svelte";
+  import WaveDeleteContent from "../components/modal-content/WaveDeleteContent.svelte";
 
-
-  const { open } = getContext('simple-modal')
   const userNonEditableFields = ['username', '_links']
 
   let isEditingUserDataActive = false
-  let isWaveEditModalVisible = false
+  let activeEditingWave = ''
+  let visibleWaveDeleteModal = ''
   let showPictureUpload = false
   let playingWave = ''
   let editedUserData = {}
+  let editedWaveTitles = {}
 
   let loadUser = async () => fetch(`/api/users/${"johny1"}`).then(res => res.json())
-  const loadUserWaves = async () => fetch(`/api/users/${"johny1"}/waves`).then(res => res.json())
+  let loadUserWaves = async () => fetch(`/api/users/${"johny1"}/waves`).then(res => res.json())
 
 
   function getEditableFieldLabel (field) {
@@ -47,12 +45,12 @@
   }
 
   function setEditedUserField(field, newValue) {
-    editedUserData[field] = newValue
-    editedUserData = editedUserData
+    editedUserData = {...editedUserData, [field]: newValue}
   }
 
   function cancelEdit() {
     isEditingUserDataActive = false
+    editedUserData = {}
   }
 
   function updateUserData() {
@@ -66,6 +64,7 @@
       if (res.status === 204) {
         isEditingUserDataActive = false
         editedUserData = {}
+        // triggering rerender
         loadUser = loadUser
       } else {
         console.log('error: ', res.status)
@@ -82,6 +81,46 @@
       document.getElementById(`wave-${waveId}`).pause()
       playingWave = ''
     }
+  }
+
+  function handleEditWaveClick(waveId) {
+    if (activeEditingWave === waveId) {
+      updateWaveTitle(waveId)
+    } else {
+      activeEditingWave = waveId
+    }
+  }
+
+  function handleDeleteWaveClick(waveId) {
+    if (activeEditingWave === waveId) {
+      editedWaveTitles = {...editedWaveTitles, [waveId]: undefined}
+      activeEditingWave = ''
+    } else {
+      visibleWaveDeleteModal = waveId
+    }
+  }
+
+  function setEditedWaveTitle(waveId, newTitle) {
+    editedWaveTitles = {...editedWaveTitles, [waveId]: newTitle}
+  }
+
+  function updateWaveTitle(waveId) {
+    fetch(`/api/waves/${waveId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/merge-patch+json'
+      },
+      body: JSON.stringify({title: editedWaveTitles[waveId]})
+    }).then(res => {
+      if (res.status === 204) {
+        activeEditingWave = false
+        editedWaveTitles = {...editedWaveTitles, waveId: undefined}
+        // triggering rerender
+        loadUserWaves = loadUserWaves
+      } else {
+        console.log('error: ', res.status)
+      }
+    })
   }
 </script>
 
@@ -103,13 +142,13 @@
               <div class="flex items-center mt-2">
                 <div class="text-2xl pl-4">
                   {#if field === 'instrumentPrimary'}
-                    <InstrumentSelect value={data[field]} on:submit={i => setEditedUserField(field, i.detail)} />
+                    <InstrumentSelect value={data[field]} on:change={i => setEditedUserField(field, i.detail)} />
                   {:else if field === 'instrumentsSecondary'}
-                    <InstrumentsCheckboxes values={data[field]} on:submit={i => setEditedUserField(field, i.detail)}/>
+                    <InstrumentsCheckboxes values={data[field]} on:change={i => setEditedUserField(field, i.detail)}/>
                   {:else if field === 'lookingFor'}
-                    <LookingForCheckboxes values={data[field]} on:submit={i => setEditedUserField(field, i.detail)}/>
+                    <LookingForCheckboxes values={data[field]} on:change={i => setEditedUserField(field, i.detail)}/>
                   {:else}
-                    <EditableText value={data[field]} isEditingActive={isEditingUserDataActive} on:submit={i => setEditedUserField(field, i.detail)} />
+                    <EditableText value={data[field]} isEditingActive={isEditingUserDataActive} on:change={i => setEditedUserField(field, i.detail)} />
                   {/if}
                 </div>
               </div>
@@ -136,7 +175,7 @@
                       <div class="text-xl mb-2">{ getPlayerType(lfField) }</div>
                     {/each}
                   {:else}
-                    <EditableText value={data[field]} isEditingActive={isEditingUserDataActive} on:submit={i => setEditedUserField(field, i.detail)} />
+                    <EditableText value={data[field]} isEditingActive={isEditingUserDataActive} on:change={i => setEditedUserField(field, i.detail)} />
                   {/if}
                 </div>
               </div>
@@ -147,7 +186,7 @@
       <div class="flex-grow flex justify-center">
         {#if isEditingUserDataActive}
           <div>
-            <IconButton type="save" on:click={updateUserData}/>
+            <IconButton type="check" on:click={updateUserData} disabled={Object.keys(editedUserData).length === 0}/>
           </div>
           <div class="ml-4">
             <IconButton type="cancel" on:click={cancelEdit}/>
@@ -180,7 +219,14 @@
             {#each data._embedded.waves as wave}
               <li class="wave flex items-center s:flex-col-reverse s:items-start">
                 <div class="flex items-center">
-                  <p class="text-2xl">{ wave.title }</p>
+                  <p class="text-2xl">
+                    <EditableText
+                      value={ wave.title }
+                      isEditingActive={activeEditingWave === wave.id}
+                      on:change={i => setEditedWaveTitle(wave.id, i.detail)}
+                      on:submit={() => updateWaveTitle(wave.id)}
+                    />
+                  </p>
                   <audio id={`wave-${wave.id}`} class="wave-audio">
                     <source src={$url(`../waves/${'johny1'}/${wave.fileName}`)} type="audio/mpeg"/>
                   </audio>
@@ -190,21 +236,33 @@
                     on:click={() => togglePlaying(wave.id)}
                   />
                 </div>
-                <div class="ml-2 s:ml-0">
-                  <IconButton on:click={() => (isWaveEditModalVisible = true) } />
+                <div class="ml-4 s:ml-0 flex">
+                  <IconButton
+                    type={activeEditingWave === wave.id ? 'check' : 'edit'}
+                    on:click={ () => handleEditWaveClick(wave.id) }
+                    disabled={activeEditingWave === wave.id && !editedWaveTitles[wave.id]}
+                    noText />
+                  <div class="ml-2">
+                    <IconButton
+                      type="cancel"
+                      on:click={() => handleDeleteWaveClick(wave.id) }
+                      noText={activeEditingWave !== wave.id} />
+                  </div>
                 </div>
+                {#if visibleWaveDeleteModal === wave.id}
+                  <Modal on:close={() => visibleWaveDeleteModal = ''}>
+                    <WaveDeleteContent waveTitle={wave.title} waveId={wave.id} />
+                  </Modal>
+                {/if}
               </li>
             {/each}
           </ul>
         </div>
-        {#if isWaveEditModalVisible}
-          <Modal on:close={() => isWaveEditModalVisible = false}>
-            heyoo
-          </Modal>
-        {/if}
       {/if}
     {/await}
-    <div class="upload-waves"></div>
+    <div class="mt-6 p-4 border-2 border-waveyGreen rounded-xl">
+      <p class="text-4xl">Upload a new wave</p>
+    </div>
   </div>
 </article>
 

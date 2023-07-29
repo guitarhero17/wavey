@@ -4,7 +4,7 @@
   import { isAuthenticated, logCurrentUserOut } from '../utils/userAuthentication'
   import Modal from './Modal.svelte'
   import HamburgerMenuToggle from './icons/HamburgerMenuToggle.svelte'
-  import LoginModalContent from "./modal-content/LoginModalContent.svelte";
+  import LoginContent from "./modal-content/LoginContent.svelte";
 
   let isLoginModalOpen = false
   let isMobileHeaderVisible = false
@@ -102,7 +102,7 @@
   {/if}
   {#if isLoginModalOpen}
     <Modal on:close={() => isLoginModalOpen = false}>
-      <LoginModalContent />
+      <LoginContent />
     </Modal>
   {/if}
 </header>

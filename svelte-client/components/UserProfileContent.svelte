@@ -1,7 +1,5 @@
 <script>
   import { url } from '@roxi/routify'
-  import { getContext } from 'svelte';
-  import { fade } from 'svelte/transition'
   import { retrieveAuthUserId } from '../utils/userAuthentication'
   import InfoInstrument from './InfoInstrument.svelte'
   import Modal from "./Modal.svelte";
@@ -16,14 +14,6 @@
   let username = user.username
   let firstName = user.name.split(' ')[0]
 
-  const tippyProps = {
-    content: `Call ${user.name}`,
-    allowHTML: true,
-    placement: 'bottom',
-    arrow: false,
-    delay: 300,
-    offset: [0,10]
-  }
 </script>
 
 <article>
